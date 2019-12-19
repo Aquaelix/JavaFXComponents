@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Year;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.ListProperty;
@@ -216,6 +219,16 @@ public class DateChooser extends HBox implements Initializable {
 		// System.out.println(date.toString());
 	}
 
+	public void inicializar() {
+		String str=LocalDate.now().getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES"));
+		
+		str = str.substring(0, 1).toUpperCase() + str.substring(1);
+		
+		setDia(String.valueOf(LocalDate.now().getDayOfMonth()));	
+		setMes(str);
+		setAnio(String.valueOf(LocalDate.now().getYear()));
+	}
+	
 	public final ObjectProperty<LocalDate> dateProperty() {
 		return this.date;
 	}
@@ -262,6 +275,16 @@ public class DateChooser extends HBox implements Initializable {
 
 	public final void setAnio(final String anio) {
 		this.anioProperty().set(anio);
+	}
+	
+	/**
+	 * Permite retornar la fecha en formato dd/MM/YYYY
+	 * 
+	 */
+	public final String getDateFormated() {
+		DateTimeFormatter formater = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+		
+		return getDate().format(formater);
 	}
 
 }

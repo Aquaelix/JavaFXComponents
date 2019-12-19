@@ -1,10 +1,5 @@
 package dad.javafx.mvc.components;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
-import java.util.Locale;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
@@ -69,23 +64,16 @@ public class TestApp extends Application {
 	}
 
 	private void onConsultaAction(ActionEvent e) {
-		DateTimeFormatter formater = DateTimeFormatter.ofPattern("dd/MM/YYYY");
 		
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Fecha");
-		alert.setContentText("La fecha seleccionada es: "+date.getDate().format(formater));
+		alert.setContentText("La fecha seleccionada es: "+date.getDateFormated());
 		alert.showAndWait();
 	}
 
 	private void onIniciarAction(ActionEvent e) {
 		
-		String str=LocalDate.now().getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES"));
-		
-		str = str.substring(0, 1).toUpperCase() + str.substring(1);
-		
-		date.setDia(String.valueOf(LocalDate.now().getDayOfMonth()));	
-		date.setMes(str);
-		date.setAnio(String.valueOf(LocalDate.now().getYear()));
+		date.inicializar();
 		
 	}
 }
