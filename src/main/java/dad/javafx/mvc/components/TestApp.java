@@ -1,11 +1,27 @@
 package dad.javafx.mvc.components;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.Locale;
+
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class TestApp extends Application {
+	
+	private DateChooser date;
+	
+	private Button consulta, iniciar;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -14,6 +30,9 @@ public class TestApp extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+	
+		date = new DateChooser();
+/*		
 		ListSelector<String> listSelector = new ListSelector<String>();
 		
 		listSelector.setLeftTitle("Jugadores");
@@ -21,16 +40,52 @@ public class TestApp extends Application {
 		
 		listSelector.getLeftItems().addAll("Perico","Palotes","Menganita","Fulanito");
 
-//		listSelector.getRightItems().addAll("Perico","Palotes","Menganita","Fulanito");
+		listSelector.getRightItems().addAll("Perico","Palotes","Menganita","Fulanito");
+*/
+		
+		iniciar = new Button("Inicializar");
+		iniciar.setOnAction(e -> onIniciarAction(e));
+		
+		consulta = new Button("Consultar");
+		consulta.setOnAction(e -> onConsultaAction(e));
+		
+		
+		HBox hbox = new HBox(5.0, iniciar, consulta);
+		hbox.setAlignment(Pos.CENTER);
+		
+		VBox vbox = new VBox(5, date, hbox);
+		vbox.setAlignment(Pos.CENTER);
+	
 
 		BorderPane root = new BorderPane();
-		root.setCenter(listSelector);
+		root.setCenter(vbox);
 		
 		Scene scene = new Scene(root, 320, 200);
 		
 		primaryStage.setTitle("Custom componentes test app");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+	}
+
+	private void onConsultaAction(ActionEvent e) {
+		DateTimeFormatter formater = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+		
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Fecha");
+		alert.setContentText("La fecha seleccionada es: "+date.getDate().format(formater));
+		alert.showAndWait();
+	}
+
+	private void onIniciarAction(ActionEvent e) {
+		
+		String str=LocalDate.now().getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES"));
+		
+		str = str.substring(0, 1).toUpperCase() + str.substring(1);
+		
+		date.setDia(String.valueOf(LocalDate.now().getDayOfMonth()));	
+		date.setMes(str);
+		date.setAnio(String.valueOf(LocalDate.now().getYear()));
 		
 	}
 }
